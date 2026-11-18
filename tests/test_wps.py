@@ -32,6 +32,20 @@ class SchemaTests(unittest.TestCase):
         errors = wps.validate_pack(PACK, data)
         self.assertTrue(any("id prefix" in error for error in errors))
 
+    def test_svg_master_is_rejected(self) -> None:
+        data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        data["source"]["kind"] = "vector"
+        data["source"]["file"] = "source.svg"
+        errors = wps.validate_pack(PACK, data)
+        self.assertTrue(any("SVG" in error for error in errors))
+
+    def test_svg_master_cannot_render(self) -> None:
+        data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        data["source"]["kind"] = "vector"
+        data["source"]["file"] = "source.svg"
+        with self.assertRaises(SystemExit):
+            wps.ensure_master(PACK, data)
+
 
 class GeometryTests(unittest.TestCase):
     def test_crop_keeps_safe_area(self) -> None:

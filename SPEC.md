@@ -1,21 +1,21 @@
 # Wallset Spec v0.1 — Draft
 
-> Кратко (RU): один мастер-исходник (SVG/PNG или скрипт + seed) плюс один
+> Кратко (RU): один мастер-исходник (PNG или скрипт + seed) плюс один
 > JSON-манифест описывают статические обои; набор JPG-файлов и конфиги под
 > ОС порождаются автоматически. Dynamic/live-обои в v0.1 не поддерживаются.
 >
-> DE: Eine Master-Datei (SVG/PNG oder Skript + Seed) plus ein JSON-Manifest
+> DE: Eine Master-Datei (PNG oder Skript + Seed) plus ein JSON-Manifest
 > beschreiben statische Hintergründe; JPG-Dateien und Systemkonfigurationen
 > werden automatisch erzeugt. Dynamische Hintergründe werden in v0.1 nicht unterstützt.
 >
-> ZH: 一个母版源文件（SVG/PNG 或脚本 + 种子）加一个 JSON 清单即可描述静态壁纸；
+> ZH: 一个母版源文件（PNG 或脚本 + 种子）加一个 JSON 清单即可描述静态壁纸；
 > JPG 文件和各系统配置会自动生成。v0.1 不支持动态壁纸。
 >
-> JA: 1つのマスター素材（SVG/PNG、またはスクリプトとシード）と JSON マニフェストで
+> JA: 1つのマスター素材（PNG、またはスクリプトとシード）と JSON マニフェストで
 > 静的壁紙を記述し、JPG ファイルと OS 固有の設定を自動生成します。v0.1 では動的
 > 壁紙はサポートしません。
 >
-> KO: 마스터 파일(SVG/PNG 또는 스크립트와 시드)과 JSON 매니페스트 하나로 정적 배경화면을
+> KO: 마스터 파일(PNG 또는 스크립트와 시드)과 JSON 매니페스트 하나로 정적 배경화면을
 > 설명하며, JPG 파일과 OS별 설정을 자동 생성합니다. v0.1에서는 동적 배경화면을 지원하지 않습니다.
 
 **Status:** draft. No compatibility promise on `v0.x`; a breaking change means
@@ -31,6 +31,7 @@ a new schema file (`v0.2.json`, …).
 ## 2. Non-goals
 
 - Video, WebGL, HTML, "live" or interactive wallpapers.
+- SVG/vector masters in v0.1 — rasterise them to PNG before packaging.
 - Time/sun-based rotation, audio reactivity, widget layers.
 - HDR, Display P3, ICC profiles other than sRGB.
 - Automatic multi-monitor span mode (per-monitor output only).
@@ -43,7 +44,7 @@ fields are outside this specification and MUST be ignored by conforming tools.
 
 | Term | Meaning |
 |---|---|
-| **master** | Lossless source: SVG, PNG, or a procedural script plus seed. |
+| **master** | Lossless source: PNG, or a procedural script plus seed. SVG is not supported in v0.1. |
 | **pack** | Directory containing a manifest, a master, licence and notes. |
 | **safe area** | Normalised rectangle that must survive every crop. |
 | **profile** | Aspect ratio plus the pixel widths to render. |
@@ -56,7 +57,6 @@ fields are outside this specification and MUST be ignored by conforming tools.
 packs/<theme>/<slug>/
 ├── wallpaper.pack.json     REQUIRED
 ├── source.png              REQUIRED for origin=own|ai; generated for procedural
-├── source.svg              alternative lossless master
 ├── generate.py             REQUIRED for origin=procedural
 ├── LICENSE                 REQUIRED, SPDX: CC0-1.0
 └── README.md               REQUIRED (origin, model/seed, crop notes)
@@ -83,7 +83,7 @@ File name is fixed: `wallpaper.pack.json`. Schema: `schema/v0.1.json`.
 | `theme.mode` | yes | enum | `dark`, `light`, or `auto`. |
 | `theme.palette` | no | object | `base`, `surface`, `accent`, `text` as `#rrggbb`. |
 | `source.file` | yes | string | Master file name, relative to the pack. |
-| `source.kind` | yes | enum | `raster`, `vector`, `procedural`. |
+| `source.kind` | yes | enum | `raster` or `procedural`. `vector`/SVG is NOT supported in v0.1. |
 | `source.width` | yes | integer | Master width in pixels, > 0. |
 | `source.height` | yes | integer | Master height in pixels, > 0. |
 | `source.origin` | yes | enum | `own`, `procedural`, `ai`, `mixed`. |
@@ -142,9 +142,9 @@ The master MUST never be re-encoded before cropping.
 
 ### 7.1 EN
 
-A raster master MUST be lossless: 8-bit PNG in sRGB, or SVG for vector art; a
-procedural script with a fixed seed is an equivalent alternative. JPEG MUST NOT
-be used as a master — its compression and 4:2:0 chroma subsampling would be
+A master MUST be lossless: 8-bit PNG in sRGB, or a procedural script with a
+fixed seed. SVG/vector masters are NOT supported in v0.1; rasterise them to PNG
+before packaging. JPEG MUST NOT be used as a master — its compression and 4:2:0 chroma subsampling would be
 baked into every rendition. 16-bit PNG offers little benefit because the final
 output is 8-bit JPEG.
 
@@ -176,9 +176,9 @@ as the reference pack does.
 
 ### 7.2 DE
 
-Ein Raster-Master muss verlustfrei sein: 8-Bit-PNG in sRGB oder SVG für
-Vektorgrafiken; ein prozedurales Skript mit festem Seed ist eine gleichwertige
-Alternative. JPEG darf nicht als Master verwendet werden — seine Kompression
+Ein Master muss verlustfrei sein: 8-Bit-PNG in sRGB oder ein prozedurales
+Skript mit festem Seed. SVG-/Vektor-Master werden in v0.1 NICHT unterstützt;
+vor dem Packen zu PNG rastern. JPEG darf nicht als Master verwendet werden — seine Kompression
 und 4:2:0-Chroma-Subsampling würden in jede Ausgabe übernommen. 16-Bit-PNG
 bringt wenig, da das Endergebnis ein 8-Bit-JPEG ist.
 
@@ -211,9 +211,9 @@ Verwenden Sie für Ultrawide- und Portrait-Profile pro-Profil-Überschreibungen
 
 ### 7.3 RU
 
-Растровый мастер обязан быть lossless: 8-битный PNG в sRGB или SVG для
-векторной графики; процедурный скрипт с фиксированным seed — равнозначная
-альтернатива. JPEG нельзя использовать как мастер — его компрессия и
+Мастер обязан быть lossless: 8-битный PNG в sRGB или процедурный скрипт с
+фиксированным seed. SVG/векторные мастера в v0.1 НЕ поддерживаются; перед
+упаковкой растеризуйте их в PNG. JPEG нельзя использовать как мастер — его компрессия и
 4:2:0-субдискретизация хромы закрепятся в каждом рендере. 16-битный PNG даёт
 мало выигрыша, ведь финал — 8-битный JPEG.
 
@@ -245,8 +245,8 @@ Verwenden Sie für Ultrawide- und Portrait-Profile pro-Profil-Überschreibungen
 
 ### 7.4 ZH
 
-栅格母版必须是无损的：sRGB 8-bit PNG，矢量图用 SVG；带固定种子的程序化脚本是等效替代。
-不得用 JPEG 作母版——其压缩和 4:2:0 色度子采样会被固化进每个输出。16-bit PNG 收益很小，
+母版必须是无损的：sRGB 8-bit PNG，或带固定种子的程序化脚本。v0.1 不支持 SVG／矢量母版；
+打包前请先栅格化为 PNG。不得用 JPEG 作母版——其压缩和 4:2:0 色度子采样会被固化进每个输出。16-bit PNG 收益很小，
 因为最终是 8-bit JPEG。
 
 渲染器只裁切，不拉伸。母版尺寸必须保证每个配置裁切后的宽度不小于该配置请求的最大输出
@@ -271,8 +271,9 @@ Verwenden Sie für Ultrawide- und Portrait-Profile pro-Profil-Überschreibungen
 
 ### 7.5 JA
 
-ラスターマスターは非圧縮である必要があります。sRGB の 8bit PNG、ベクターなら SVG。
-固定シード付きの手続き型スクリプトも同等の代替手段です。JPEG をマスターにしてはいけません。
+マスターは非圧縮である必要があります。sRGB の 8bit PNG、または固定シード付きの
+手続き型スクリプトです。v0.1 は SVG／ベクターのマスターに対応していません。パッケージ化の
+前に PNG へラスタライズしてください。JPEG をマスターにしてはいけません。
 圧縮と 4:2:0 色差サブサンプリングがすべての出力に焼き付きます。最終出力が 8bit JPEG のため、
 16bit PNG の恩恵はほとんどありません。
 
@@ -301,8 +302,9 @@ Verwenden Sie für Ultrawide- und Portrait-Profile pro-Profil-Überschreibungen
 
 ### 7.6 KO
 
-래스터 마스터는 반드시 무손실이어야 합니다. sRGB 8비트 PNG, 벡터는 SVG를 사용하고,
-고정 시드가 있는 절차적 스크립트도 동등한 대안입니다. JPEG는 마스터로 쓸 수 없습니다.
+마스터는 반드시 무손실이어야 합니다. sRGB 8비트 PNG 또는 고정 시드가 있는 절차적
+스크립트를 사용합니다. v0.1은 SVG／벡터 마스터를 지원하지 않습니다. 패키징 전에
+PNG로 래스터화하세요. JPEG는 마스터로 쓸 수 없습니다.
 압축과 4:2:0 색도 서브샘플링이 모든 결과물에 그대로 남습니다. 최종 출력이 8비트 JPEG이므로
 16비트 PNG의 이점은 거의 없습니다.
 

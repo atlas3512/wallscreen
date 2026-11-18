@@ -150,6 +150,9 @@ def validate_pack(pack_dir: Path, data: dict[str, Any]) -> list[str]:
     source = data.get("source", {})
     pack_id = str(data.get("id", ""))
 
+    if source.get("kind") == "vector" or str(source.get("file", "")).lower().endswith(".svg"):
+        errors.append("SVG/vector masters are not supported in v0.1; rasterise to PNG")
+
     if "." in pack_id and pack_id.split(".", 1)[0] != theme.get("id"):
         errors.append("id prefix does not match theme.id")
 
@@ -190,6 +193,15 @@ def ensure_master(pack_dir: Path, data: dict[str, Any]) -> Path:
     from PIL import Image  # noqa: F401  (import also validates Pillow presence)
 
     source = data["source"]
+    if source.get("kind") == "vector" or str(source.get("file", "")).lower().endswith(".svg"):
+        raise SystemExit(L(
+            "v0.1 does not support SVG/vector masters; rasterise to PNG",
+            "v0.1 unterstützt keine SVG-/Vektor-Master; zu PNG rastern",
+            "v0.1 не поддерживает SVG/векторные мастера; растеризуйте в PNG",
+            "v0.1 不支持 SVG／矢量母版；请先栅格化为 PNG",
+            "v0.1 は SVG／ベクターのマスターに対応していません。PNG にラスタライズしてください",
+            "v0.1은 SVG／벡터 마스터를 지원하지 않습니다. PNG로 래스터화하세요",
+        ))
     master = pack_dir / source["file"]
     if master.is_file():
         return master

@@ -6,7 +6,7 @@ Open format for static wallpapers: one master source → one clear set of JPG fi
 
 - Only static wallpapers; video/WebGL/live wallpapers are non-goals.
 - Only JPEG output: quality 92, 4:4:4, sRGB, progressive, no EXIF.
-- The master (SVG/PNG or script + seed) stays in git; JPGs are build artefacts.
+- The master (PNG or script + seed) stays in git; JPGs are build artefacts.
 - Targets: `linux:<de>`, `windows`, `macos`, `freebsd:<de>`, `haiku`.
 - Origin is mandatory: `own | procedural | ai | mixed`. Images CC0, code MIT.
 
@@ -20,7 +20,7 @@ Offenes Format für statische Hintergründe: eine Master-Datei → eine klar def
 
 - Nur statische Hintergründe; Video, WebGL und Live-Hintergründe sind ausgeschlossen.
 - Nur JPEG-Ausgabe: Qualität 92, 4:4:4, sRGB, progressiv, ohne EXIF.
-- Die Master-Datei (SVG/PNG oder Skript + Seed) bleibt in git; JPGs sind Build-Artefakte.
+- Die Master-Datei (PNG oder Skript + Seed) bleibt in git; JPGs sind Build-Artefakte.
 - Ziele: `linux:<de>`, `windows`, `macos`, `freebsd:<de>`, `haiku`.
 - Die Herkunft ist Pflicht: `own | procedural | ai | mixed`. Bilder CC0, Code MIT.
 
@@ -34,7 +34,7 @@ Spezifikation: **Wallset** v0.1. Repository: `wallscreen`.
 
 - Только статические обои; видео, WebGL и live-обои — не-goal.
 - Только JPEG на выходе: качество 92, 4:4:4, sRGB, progressive, без EXIF.
-- Мастер (SVG/PNG или скрипт + seed) хранится в git; JPG — артефакты сборки.
+- Мастер (PNG или скрипт + seed) хранится в git; JPG — артефакты сборки.
 - Таргеты: `linux:<de>`, `windows`, `macos`, `freebsd:<de>`, `haiku`.
 - Происхождение обязательно: `own | procedural | ai | mixed`. Обои CC0, код MIT.
 
@@ -48,7 +48,7 @@ Spezifikation: **Wallset** v0.1. Repository: `wallscreen`.
 
 - 仅支持静态壁纸；视频、WebGL 和动态壁纸不在范围内。
 - 仅输出 JPEG：质量 92、4:4:4、sRGB、渐进式、无 EXIF。
-- 母版（SVG/PNG 或脚本 + 种子）保存在 git 中；JPG 属于构建产物。
+- 母版（PNG 或脚本 + 种子）保存在 git 中；JPG 属于构建产物。
 - 目标平台：`linux:<de>`、`windows`、`macos`、`freebsd:<de>`、`haiku`。
 - 必须声明来源：`own | procedural | ai | mixed`。图片 CC0，代码 MIT。
 
@@ -62,7 +62,7 @@ Spezifikation: **Wallset** v0.1. Repository: `wallscreen`.
 
 - 静的壁紙のみ。動画、WebGL、動的壁紙は対象外です。
 - 出力は JPEG のみ：品質 92、4:4:4、sRGB、プログレッシブ、EXIF なし。
-- マスター（SVG/PNG、またはスクリプトとシード）は git に置き、JPG はビルド成果物とします。
+- マスター（PNG、またはスクリプトとシード）は git に置き、JPG はビルド成果物とします。
 - ターゲット：`linux:<de>`、`windows`、`macos`、`freebsd:<de>`、`haiku`。
 - 起源の宣言は必須：`own | procedural | ai | mixed`。画像は CC0、コードは MIT。
 
@@ -76,7 +76,7 @@ Spezifikation: **Wallset** v0.1. Repository: `wallscreen`.
 
 - 정적 배경화면만 지원합니다. 동영상, WebGL, 동적 배경화면은 대상이 아닙니다.
 - 출력은 JPEG만 지원합니다: 품질 92, 4:4:4, sRGB, 프로그레시브, EXIF 없음.
-- 마스터(SVG/PNG 또는 스크립트와 시드)는 git에 두고, JPG는 빌드 산출물입니다.
+- 마스터(PNG 또는 스크립트와 시드)는 git에 두고, JPG는 빌드 산출물입니다.
 - 대상: `linux:<de>`, `windows`, `macos`, `freebsd:<de>`, `haiku`.
 - 출처는 필수입니다: `own | procedural | ai | mixed`. 이미지는 CC0, 코드는 MIT.
 

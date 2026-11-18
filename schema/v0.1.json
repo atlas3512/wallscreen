@@ -67,7 +67,10 @@
       "required": ["file", "kind", "width", "height", "origin"],
       "properties": {
         "file": { "type": "string", "pattern": "^[^/\\\\]+$" },
-        "kind": { "enum": ["raster", "vector", "procedural"] },
+        "kind": {
+          "description": "EN: Master kind; SVG/vector is not supported in v0.1.\nDE: Master-Art; SVG/Vektor wird in v0.1 nicht unterstützt.\nRU: Тип мастера; SVG/вектор не поддерживается в v0.1.\nZH: 母版类型；v0.1 不支持 SVG／矢量。\nJA: マスターの種類。v0.1 では SVG／ベクターは未対応です。\nKO: 마스터 종류. v0.1에서는 SVG／벡터를 지원하지 않습니다.",
+          "enum": ["raster", "procedural"]
+        },
         "width": { "type": "integer", "minimum": 1 },
         "height": { "type": "integer", "minimum": 1 },
         "origin": { "enum": ["own", "procedural", "ai", "mixed"] },
