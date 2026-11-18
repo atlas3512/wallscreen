@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas3512.github.io/wallscreen/schema/v0.1.json",
+  "title": "Wallset Spec v0.1",
+  "description": "EN: Manifest for a static wallpaper pack.\nDE: Manifest für ein statisches Hintergrundbild-Paket.\nRU: Манифест статического пакета обоев.\nZH: 静态壁纸包的清单。\nJA: 静的壁紙パックのマニフェスト。",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": {}
+  },
+  "required": [
+    "spec",
+    "type",
+    "id",
+    "name",
+    "version",
+    "license",
+    "author",
+    "theme",
+    "source",
+    "safe_area",
+    "renditions",
+    "output",
+    "targets"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "format": "uri" },
+    "spec": { "const": "0.1" },
+    "type": { "const": "static" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+\\.[a-z0-9-]+$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-z0-9.-]+)?$"
+    },
+    "license": { "type": "string", "minLength": 1 },
+    "author": { "type": "string", "minLength": 1 },
+    "theme": {
+      "type": "object",
+      "description": "EN: Palette identity and light/dark mode.\nDE: Palettenidentität und Hell/Dunkel-Modus.\nRU: Идентификатор палитры и режим светлая/тёмная.\nZH: 配色标识与明暗模式。\nJA: パレット識別子とライト/ダークモード。",
+      "additionalProperties": false,
+      "patternProperties": { "^x-": {} },
+      "required": ["id", "mode"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "mode": { "enum": ["dark", "light", "auto"] },
+        "palette": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "base": { "$ref": "#/$defs/hexColor" },
+            "surface": { "$ref": "#/$defs/hexColor" },
+            "accent": { "$ref": "#/$defs/hexColor" },
+            "text": { "$ref": "#/$defs/hexColor" }
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "description": "EN: Lossless master and its provenance (own/procedural/ai/mixed).\nDE: Verlustfreier Master und seine Herkunft (own/procedural/ai/mixed).\nRU: Lossless-мастер и его происхождение (own/procedural/ai/mixed).\nZH: 无损母版及其来源（own/procedural/ai/mixed）。\nJA: 非圧縮マスターとその起源（own/procedural/ai/mixed）。",
+      "additionalProperties": false,
+      "patternProperties": { "^x-": {} },
+      "required": ["file", "kind", "width", "height", "origin"],
+      "properties": {
+        "file": { "type": "string", "pattern": "^[^/\\\\]+$" },
+        "kind": { "enum": ["raster", "vector", "procedural"] },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "origin": { "enum": ["own", "procedural", "ai", "mixed"] },
+        "generator": { "type": "string" },
+        "seed": { "type": "integer" },
+        "script": { "type": "string", "pattern": "^[^/\\\\]+$" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              { "properties": { "kind": { "const": "procedural" } } },
+              { "properties": { "origin": { "const": "procedural" } } }
+            ]
+          },
+          "then": { "required": ["script"] }
+        }
+      ]
+    },
+    "safe_area": { "$ref": "#/$defs/safeArea" },
+    "renditions": {
+      "type": "object",
+      "description": "EN: Aspect profiles and output widths to render.\nDE: Seitenverhältnis-Profile und zu rendernde Ausgabeweiten.\nRU: Профили соотношения сторон и ширины выходных файлов.\nZH: 要渲染的宽高比配置和输出宽度。\nJA: レンダリング対象のアスペクトプロファイルと出力幅。",
+      "minProperties": 1,
+      "propertyNames": {
+        "enum": ["16:9", "16:10", "21:9", "32:9", "4:3", "5:4", "9:16", "1:1"]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "patternProperties": { "^x-": {} },
+        "required": ["sizes"],
+        "properties": {
+          "sizes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "integer", "minimum": 1 }
+          },
+          "fit": { "enum": ["cover", "contain"] },
+          "safe_area": { "$ref": "#/$defs/safeArea" }
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "description": "EN: Pinned JPEG encoder profile (v0.1 allows jpeg only).\nDE: Festgelegtes JPEG-Encoder-Profil (v0.1 erlaubt nur jpeg).\nRU: Зафиксированный профиль JPEG-энкодера (v0.1 допускает только jpeg).\nZH: 固定的 JPEG 编码器配置（v0.1 仅允许 jpeg）。\nJA: 固定された JPEG エンコーダープロファイル（v0.1 では jpeg のみ）。",
+      "additionalProperties": false,
+      "patternProperties": { "^x-": {} },
+      "required": [
+        "format",
+        "quality",
+        "subsampling",
+        "progressive",
+        "color_space",
+        "strip_metadata",
+        "encoder"
+      ],
+      "properties": {
+        "format": { "const": "jpeg" },
+        "quality": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "subsampling": { "enum": ["4:4:4", "4:2:2", "4:2:0"] },
+        "progressive": { "type": "boolean" },
+        "color_space": { "const": "srgb" },
+        "strip_metadata": { "const": true },
+        "encoder": { "type": "string", "minLength": 1 }
+      }
+    },
+    "targets": {
+      "type": "array",
+      "description": "EN: Target identifiers in the form <os>[:<de>][@version].\nDE: Zielkennungen der Form <os>[:<de>][@version].\nRU: Идентификаторы таргетов вида <os>[:<de>][@version].\nZH: 形如 <os>[:<de>][@version] 的目标标识符。\nJA: <os>[:<de>][@version] 形式のターゲット識別子。",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*(:[a-z][a-z0-9-]*)?(@[a-z0-9.]+)?$"
+      }
+    }
+  },
+  "$defs": {
+    "hexColor": {
+      "type": "string",
+      "description": "EN: Lowercase sRGB hex colour.\nDE: Klein geschriebene sRGB-Hex-Farbe.\nRU: Цвет в нижнем регистре в формате sRGB hex.\nZH: 小写 sRGB 十六进制颜色。\nJA: 小文字の sRGB 16進数カラー。",
+      "pattern": "^#[0-9a-f]{6}$"
+    },
+    "safeArea": {
+      "type": "object",
+      "description": "EN: Normalised rectangle that must survive every crop.\nDE: Normiertes Rechteck, das jeden Zuschnitt überstehen muss.\nRU: Нормализованный прямоугольник, который должен сохраняться при любом кропе.\nZH: 每次裁切都必须保留的归一化矩形区域。\nJA: すべての切り抜きで保持する必要がある正規化矩形。",
+      "additionalProperties": false,
+      "required": ["x", "y", "w", "h"],
+      "properties": {
+        "x": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "y": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "w": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "h": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

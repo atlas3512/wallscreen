@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r tools/requirements.txt
+
+      - name: Validate packs
+        run: python tools/wps.py validate
+
+      - name: Capability matrix
+        run: python tools/wps.py capabilities
+
+      - name: Tests
+        run: python -m unittest discover -s tests -v
+
+  # EN: FreeBSD and Haiku have no GitHub-hosted runners; keep an honest static check.
+  # DE: Für FreeBSD und Haiku gibt es keine gehosteten Runner; ehrliche statische Prüfung.
+  # RU: Для FreeBSD и Haiku нет hosted-раннеров; честная статическая проверка.
+  # ZH: FreeBSD 和 Haiku 没有托管运行器；保留诚实的静态检查。
+  # JA: FreeBSD と Haiku にはホスト型ランナーがありません。正直な静的チェックを行います。
+  static-targets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check capability declarations exist
+        run: python -c "import json; d=json.load(open('adapters/capabilities.json')); assert {'haiku','freebsd:xfce','freebsd:gnome'} <= set(d['targets'])"
+      - name: Check five-language coverage
+        run: |
+          python -c "
+          import pathlib
+          files = ['README.md', 'CONTRIBUTING.md', 'SPEC.md', 'I18N.md',
+                   'adapters/README.md', 'packs/aurora-night/aurora-01/README.md',
+                   'tools/wps.py', 'packs/aurora-night/aurora-01/generate.py']
+          tags = ['EN', 'DE', 'RU', 'ZH', 'JA']
+          for f in files:
+              text = pathlib.Path(f).read_text(encoding='utf-8')
+              missing = [t for t in tags if t not in text]
+              assert not missing, (f, missing)
+          "

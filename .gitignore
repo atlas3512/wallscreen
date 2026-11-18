@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+build/
+*.egg-info/
+
+# Procedural packs: script + seed are authoritative, the raster is derived.
+packs/aurora-night/aurora-01/source.png

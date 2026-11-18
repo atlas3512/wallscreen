@@ -1,0 +1,91 @@
+{
+  "$schema": "https://atlas3512.github.io/wallscreen/schema/v0.1.json",
+  "spec": "0.1",
+  "type": "static",
+  "id": "aurora-night.aurora-01",
+  "name": "Aurora 01",
+  "version": "1.0.0",
+  "license": "CC0-1.0",
+  "author": "sysBlank",
+  "theme": {
+    "id": "aurora-night",
+    "mode": "dark",
+    "palette": {
+      "base": "#0b1020",
+      "surface": "#121a33",
+      "accent": "#6ee7c7",
+      "text": "#e6f1ff"
+    }
+  },
+  "source": {
+    "file": "source.png",
+    "kind": "procedural",
+    "width": 7680,
+    "height": 4320,
+    "origin": "procedural",
+    "script": "generate.py",
+    "seed": 421337
+  },
+  "safe_area": {
+    "x": 0.3,
+    "y": 0.15,
+    "w": 0.4,
+    "h": 0.7
+  },
+  "renditions": {
+    "16:9": {
+      "sizes": [1920, 2560, 3840]
+    },
+    "16:10": {
+      "sizes": [1920, 2560]
+    },
+    "21:9": {
+      "sizes": [3440, 5120],
+      "safe_area": {
+        "x": 0.25,
+        "y": 0.15,
+        "w": 0.5,
+        "h": 0.7
+      }
+    },
+    "32:9": {
+      "sizes": [3840, 5120],
+      "safe_area": {
+        "x": 0.2,
+        "y": 0.25,
+        "w": 0.6,
+        "h": 0.5
+      }
+    },
+    "4:3": {
+      "sizes": [1600]
+    },
+    "9:16": {
+      "sizes": [1080, 1440],
+      "safe_area": {
+        "x": 0.42,
+        "y": 0.05,
+        "w": 0.16,
+        "h": 0.9
+      }
+    }
+  },
+  "output": {
+    "format": "jpeg",
+    "quality": 92,
+    "subsampling": "4:4:4",
+    "progressive": true,
+    "color_space": "srgb",
+    "strip_metadata": true,
+    "encoder": "Pillow@13.0"
+  },
+  "targets": [
+    "linux:hyprland",
+    "linux:gnome",
+    "windows",
+    "macos",
+    "freebsd:xfce",
+    "haiku"
+  ],
+  "x-notes": "Reference pack. Master is generated from generate.py + seed; source.png is reproducible and gitignored."
+}

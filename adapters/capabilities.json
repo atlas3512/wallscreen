@@ -1,0 +1,86 @@
+{
+  "spec": "0.1",
+  "targets": {
+    "linux:hyprland": {
+      "os": "linux",
+      "tier": 1,
+      "formats": ["jpeg"],
+      "per_monitor": true,
+      "theme_sync": false,
+      "config": "hyprpaper.conf",
+      "notes": "Monitor name must be reviewed by the user."
+    },
+    "linux:gnome": {
+      "os": "linux",
+      "tier": 1,
+      "formats": ["jpeg"],
+      "per_monitor": false,
+      "theme_sync": true,
+      "config": "gnome-background.xml",
+      "notes": "XML background definition; light/dark variants can be paired."
+    },
+    "linux:xfce": {
+      "os": "linux",
+      "tier": 2,
+      "formats": ["jpeg"],
+      "per_monitor": true,
+      "theme_sync": false,
+      "config": "xfconf-query script",
+      "notes": "Uses xfconf; path differs on FreeBSD."
+    },
+    "windows": {
+      "os": "windows",
+      "tier": 1,
+      "formats": ["jpeg"],
+      "per_monitor": true,
+      "theme_sync": true,
+      "config": ".theme / IDesktopWallpaper",
+      "notes": "Folder names must replace ':' with '-' on NTFS."
+    },
+    "macos": {
+      "os": "macos",
+      "tier": 1,
+      "formats": ["jpeg"],
+      "per_monitor": true,
+      "theme_sync": true,
+      "config": "NSWorkspace / osascript",
+      "notes": "Wallpapers are per display and per Space."
+    },
+    "freebsd:xfce": {
+      "os": "freebsd",
+      "tier": 2,
+      "formats": ["jpeg"],
+      "per_monitor": true,
+      "theme_sync": false,
+      "config": "xfconf-query script",
+      "notes": "Reuses Linux desktop adapters with /usr/local paths."
+    },
+    "freebsd:gnome": {
+      "os": "freebsd",
+      "tier": 2,
+      "formats": ["jpeg"],
+      "per_monitor": false,
+      "theme_sync": true,
+      "config": "gnome-background.xml",
+      "notes": "Reuses Linux GNOME adapter; no systemd dependency."
+    },
+    "freebsd:hyprland": {
+      "os": "freebsd",
+      "tier": 3,
+      "formats": ["jpeg"],
+      "per_monitor": true,
+      "theme_sync": false,
+      "config": "hyprpaper.conf",
+      "notes": "Unverified on FreeBSD; fallback instructions only."
+    },
+    "haiku": {
+      "os": "haiku",
+      "tier": 3,
+      "formats": ["jpeg"],
+      "per_monitor": "unknown",
+      "theme_sync": "unknown",
+      "config": "manual / Tracker",
+      "notes": "Native adapter pending verification in QEMU; fallback instructions in v0.1."
+    }
+  }
+}
