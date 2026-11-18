@@ -37,20 +37,21 @@ jobs:
   # RU: Для FreeBSD и Haiku нет hosted-раннеров; честная статическая проверка.
   # ZH: FreeBSD 和 Haiku 没有托管运行器；保留诚实的静态检查。
   # JA: FreeBSD と Haiku にはホスト型ランナーがありません。正直な静的チェックを行います。
+  # KO: FreeBSD와 Haiku에는 호스트 러너가 없습니다. 정확한 정적 검사를 유지합니다.
   static-targets:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Check capability declarations exist
         run: python -c "import json; d=json.load(open('adapters/capabilities.json')); assert {'haiku','freebsd:xfce','freebsd:gnome'} <= set(d['targets'])"
-      - name: Check five-language coverage
+      - name: Check six-language coverage
         run: |
           python -c "
           import pathlib
           files = ['README.md', 'CONTRIBUTING.md', 'SPEC.md', 'I18N.md',
                    'adapters/README.md', 'packs/aurora-night/aurora-01/README.md',
                    'tools/wps.py', 'packs/aurora-night/aurora-01/generate.py']
-          tags = ['EN', 'DE', 'RU', 'ZH', 'JA']
+          tags = ['EN', 'DE', 'RU', 'ZH', 'JA', 'KO']
           for f in files:
               text = pathlib.Path(f).read_text(encoding='utf-8')
               missing = [t for t in tags if t not in text]

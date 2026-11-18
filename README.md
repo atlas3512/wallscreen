@@ -70,7 +70,21 @@ Spezifikation: **Wallset** v0.1. Repository: `wallscreen`.
 連絡先 / GitHub: `atlas3512`（sysBlank）— sain.3512@gmail.com。
 仕様：**Wallset** v0.1。リポジトリ：`wallscreen`。
 
-## Commands / Befehle / Команды / 命令 / コマンド
+## KO — 한국어
+
+정적 배경화면을 위한 공개 형식: 마스터 파일 하나 → 명확한 JPG 파일 집합 → 운영체제별 어댑터. 상태는 `v0.1.0-draft`이며, v0.x에서 하위 호환성을 보장하지 않습니다.
+
+- 정적 배경화면만 지원합니다. 동영상, WebGL, 동적 배경화면은 대상이 아닙니다.
+- 출력은 JPEG만 지원합니다: 품질 92, 4:4:4, sRGB, 프로그레시브, EXIF 없음.
+- 마스터(SVG/PNG 또는 스크립트와 시드)는 git에 두고, JPG는 빌드 산출물입니다.
+- 대상: `linux:<de>`, `windows`, `macos`, `freebsd:<de>`, `haiku`.
+- 출처는 필수입니다: `own | procedural | ai | mixed`. 이미지는 CC0, 코드는 MIT.
+
+규범 명세:[`SPEC.md`](SPEC.md). 현지화 정책:[`I18N.md`](I18N.md).
+연락처 / GitHub: `atlas3512`(sysBlank) — sain.3512@gmail.com.
+명세:**Wallset** v0.1. 저장소:`wallscreen`.
+
+## Commands / Befehle / Команды / 命令 / コマンド / 명령
 
 ```bash
 python3 -m venv .venv
@@ -84,22 +98,23 @@ python3 -m venv .venv
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-`install` writes only into `--out`; it never touches system configuration.
-`install` schreibt nur in `--out`; Systemkonfigurationen werden nie verändert.
-`install` пишет только в `--out`; системные конфиги не трогаются.
-`install` 仅写入 `--out`，绝不修改系统配置。
-`install` は `--out` にのみ書き込み、システム設定は変更しません。
+EN: `install` writes only into `--out`; it never touches system configuration.
+DE: `install` schreibt nur in `--out`; Systemkonfigurationen werden nie verändert.
+RU: `install` пишет только в `--out`; системные конфиги не трогаются.
+ZH: `install` 仅写入 `--out`，绝不修改系统配置。
+JA: `install` は `--out` にのみ書き込み、システム設定は変更しません。
+KO: `install`은 `--out`에만 기록하며 시스템 설정은 변경하지 않습니다.
 
-## Layout / Struktur / Структура / 结构 / 構成
+## Layout / Struktur / Структура / 结构 / 構成 / 구성
 
-| Path / Pfad / Путь / 路径 / パス | EN / DE / RU / ZH / JA |
+| Path / Pfad / Путь / 路径 / パス / 경로 | EN / DE / RU / ZH / JA / KO |
 |---|---|
-| `SPEC.md` | Normative spec / Normative Spezifikation / Нормативная спецификация / 规范性文档 / 規範仕様 |
-| `I18N.md` | 5-language policy / 5-Sprachen-Regel / правило 5 языков / 五语言规则 / 5言語方針 |
-| `schema/v0.1.json` | JSON Schema with 5-language descriptions / JSON-Schema mit 5-Sprachen-Beschreibungen / JSON-схема с описаниями на 5 языках / 含五语言描述的 JSON Schema / 5言語の説明付き JSON Schema |
-| `tools/wps.py` | CLI / CLI / CLI / CLI / CLI |
-| `adapters/` | Target capability matrix / Matrix der Zielfähigkeiten / матрица возможностей таргетов / 目标能力矩阵 / ターゲット能力一覧 |
-| `packs/` | Example packs / Beispielpakete / примеры паков / 示例包 / サンプルパック |
-| `tests/`, `.github/` | Tests and CI / Tests und CI / тесты и CI / 测试与 CI / テストと CI |
+| `SPEC.md` | Normative spec / Normative Spezifikation / Нормативная спецификация / 规范性文档 / 規範仕様 / 규범 명세 |
+| `I18N.md` | 6-language policy / 6-Sprachen-Regel / правило 6 языков / 六语言规则 / 6言語方針 / 6개 언어 정책 |
+| `schema/v0.1.json` | JSON Schema with 6-language descriptions / JSON-Schema mit 6-Sprachen-Beschreibungen / JSON-схема с описаниями на 6 языках / 含六语言描述的 JSON Schema / 6言語の説明付き JSON Schema / 6개 언어 설명이 있는 JSON 스키마 |
+| `tools/wps.py` | CLI / CLI / CLI / CLI / CLI / CLI |
+| `adapters/` | Target capability matrix / Matrix der Zielfähigkeiten / матрица возможностей таргетов / 目标能力矩阵 / ターゲット能力一覧 / 대상 기능 매트릭스 |
+| `packs/` | Example packs / Beispielpakete / примеры паков / 示例包 / サンプルパック / 예제 팩 |
+| `tests/`, `.github/` | Tests and CI / Tests und CI / тесты и CI / 测试与 CI / テストと CI / 테스트와 CI |
 
-Licence / Lizenz / Лицензия / 许可证 / ライセンス: code MIT, images CC0-1.0 (AI output may not be copyrightable in some jurisdictions).
+Licence / Lizenz / Лицензия / 许可证 / ライセンス / 라이선스: code MIT, images CC0-1.0 (AI output may not be copyrightable in some jurisdictions).

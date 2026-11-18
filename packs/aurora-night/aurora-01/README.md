@@ -19,3 +19,7 @@ Wallset v0.1 的参考包。来源：程序化生成（`generate.py`，种子 `4
 ## JA
 
 Wallset v0.1 のリファレンスパックです。起源：手続き型（`generate.py`、シード `421337`）。ジェネレーター：Python + Pillow 13.0、決定的。マスター：7680x4320 PNG、初回レンダー時に生成され gitignore 対象——スクリプトとシードが正規の情報源です。ライセンス：CC0-1.0。グローバルな safe area はオーロラの中心を覆い、21:9 では広く、32:9 では低く、9:16 では細く高い上書き設定を使用します。再現：`python generate.py source.png 421337`。
+
+## KO
+
+Wallset v0.1 참조 팩입니다. 출처: 절차적 생성(`generate.py`, 시드 `421337`). 제너레이터: Python + Pillow 13.0, 결정적. 마스터: 7680x4320 PNG, 첫 렌더링 시 생성되며 gitignore 대상——스크립트와 시드가 정확한 원본입니다. 라이선스: CC0-1.0. 전역 safe area는 오로라 중심을 덮으며, 21:9에서는 넓게, 32:9에서는 낮게, 9:16에서는 좁고 높은 설정을 사용합니다. 재현: `python generate.py source.png 421337`.

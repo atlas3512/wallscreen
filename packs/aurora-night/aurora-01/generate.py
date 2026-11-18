@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Master procedurale / Deterministic procedural master / Процедурный мастер / 程序化母版 / 手続き型マスター.
+"""Master procedurale / Deterministic procedural master / Процедурный мастер / 程序化母版 / 手続き型マスター / 절차적 마스터.
 
 EN: Deterministic procedural master for aurora-night/aurora-01. Same seed + same Pillow version = same bytes.
 DE: Deterministischer prozeduraler Master für aurora-night/aurora-01. Gleicher Seed + gleiche Pillow-Version = gleiche Bytes.
 RU: Детерминированный процедурный мастер для aurora-night/aurora-01. Тот же seed + та же версия Pillow = те же байты.
 ZH: aurora-night/aurora-01 的确定性程序化母版。相同种子 + 相同 Pillow 版本 = 相同字节。
 JA: aurora-night/aurora-01 の決定的な手続き型マスター。同じシードと Pillow バージョンで同じバイト列になります。
+KO: aurora-night/aurora-01의 결정적 절차적 마스터입니다. 같은 시드와 Pillow 버전이면 같은 바이트가 됩니다.
 
-Usage / Nutzung / Использование / 用法 / 使い方:
+Usage / Nutzung / Использование / 用法 / 使い方 / 사용법:
     python generate.py [output.png] [seed]
 """
 
@@ -36,6 +37,7 @@ def build(seed: int) -> Image.Image:
     # RU: Маленький градиент с апскейлом: дёшево и гладко для большого неба.
     # ZH: 小尺寸渐变再放大：大尺寸天空成本低且平滑。
     # JA: 小さなグラデーションを拡大：大きな空を低コストで滑らかに描けます。
+    # KO: 작은 그라디언트를 확대합니다. 큰 하늘을 저비용으로 부드럽게 그릴 수 있습니다.
     sky = Image.new("RGB", (SW, SH))
     pixels = sky.load()
     for y in range(SH):
@@ -56,6 +58,7 @@ def build(seed: int) -> Image.Image:
     # RU: Ленты авроры на оверлее в четверть разрешения.
     # ZH: 在四分之一分辨率叠加层上绘制极光带。
     # JA: 4分の1解像度のオーバーレイにオーロラの帯を描きます。
+    # KO: 4분의 1 해상도 오버레이에 오로라 띠를 그립니다.
     ow, oh = W // 4, H // 4
     ribbons = Image.new("RGBA", (ow, oh), (0, 0, 0, 0))
     draw = ImageDraw.Draw(ribbons, "RGBA")
@@ -76,7 +79,7 @@ def build(seed: int) -> Image.Image:
     )
     image = Image.alpha_composite(image.convert("RGBA"), ribbons).convert("RGB")
 
-    # EN: Stars. / DE: Sterne. / RU: Звёзды. / ZH: 星。 / JA: 星。
+    # EN: Stars. / DE: Sterne. / RU: Звёзды. / ZH: 星。 / JA: 星。 / KO: 별.
     stars = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     star_draw = ImageDraw.Draw(stars, "RGBA")
     for _ in range(420):
@@ -92,6 +95,7 @@ def build(seed: int) -> Image.Image:
     # RU: Линия горизонта — также служит видимой нижней границей safe_area.
     # ZH: 地面山脊——同时为 safe area 提供可见的底部锚点。
     # JA: 地面の稜線——safe area の下側の目印にもなります。
+    # KO: 지평선 능선은 safe area의 아래쪽 기준점이기도 합니다.
     ridge = [(0, H)]
     for i in range(13):
         x = int(W * i / 12)
@@ -109,7 +113,15 @@ def main() -> None:
     image = build(seed)
     output.parent.mkdir(parents=True, exist_ok=True)
     image.save(output, "PNG", optimize=True)
-    print(f"wrote {output} ({image.width}x{image.height}, seed={seed})")
+    for tag, text in (
+        ("EN", f"wrote {output} ({image.width}x{image.height}, seed={seed})"),
+        ("DE", f"geschrieben: {output} ({image.width}x{image.height}, Seed={seed})"),
+        ("RU", f"записано {output} ({image.width}x{image.height}, seed={seed})"),
+        ("ZH", f"已写入 {output}（{image.width}x{image.height}，种子={seed}）"),
+        ("JA", f"書き出し: {output} ({image.width}x{image.height}, シード={seed})"),
+        ("KO", f"기록했습니다: {output} ({image.width}x{image.height}, 시드={seed})"),
+    ):
+        print(f"{tag}: {text}")
 
 
 if __name__ == "__main__":

@@ -6,8 +6,9 @@ DE: Kommandozeilenwerkzeug für Wallset v0.1.
 RU: CLI-утилита для Wallset v0.1.
 ZH: Wallset v0.1 的命令行工具。
 JA: Wallset v0.1 のコマンドラインツール。
+KO: Wallset v0.1용 명령줄 도구입니다.
 
-Commands / Befehle / Команды / 命令 / コマンド:
+Commands / Befehle / Команды / 命令 / コマンド / 명령:
 validate, render, pack, install, capabilities
 """
 
@@ -39,24 +40,26 @@ ASPECTS: dict[str, tuple[int, int]] = {
 }
 SUBSAMPLING = {"4:4:4": 0, "4:2:2": 1, "4:2:0": 2}
 
-LANG_TAGS = ("EN", "DE", "RU", "ZH", "JA")
+LANG_TAGS = ("EN", "DE", "RU", "ZH", "JA", "KO")
 
 
-def L(en: str, de: str, ru: str, zh: str, ja: str) -> str:
-    """EN: Build a five-language message.
-    DE: Erzeugt eine Nachricht in fünf Sprachen.
-    RU: Формирует сообщение на пяти языках.
-    ZH: 生成五语言消息。
-    JA: 5言語のメッセージを生成します。
+def L(en: str, de: str, ru: str, zh: str, ja: str, ko: str) -> str:
+    """EN: Build a six-language message.
+    DE: Erzeugt eine Nachricht in sechs Sprachen.
+    RU: Формирует сообщение на шести языках.
+    ZH: 生成六语言消息。
+    JA: 6言語のメッセージを生成します。
+    KO: 6개 언어 메시지를 생성합니다.
     """
     return "\n".join(
-        f"{tag}: {text}" for tag, text in zip(LANG_TAGS, (en, de, ru, zh, ja))
+        f"{tag}: {text}"
+        for tag, text in zip(LANG_TAGS, (en, de, ru, zh, ja, ko))
     )
 
 
 # ---------------------------------------------------------------------------
 # EN: helpers / DE: Hilfsfunktionen / RU: вспомогательные функции
-# ZH: 辅助函数 / JA: ヘルパー関数
+# ZH: 辅助函数 / JA: ヘルパー関数 / KO: 도우미 함수
 
 
 def load_pack(argument: str) -> tuple[Path, dict[str, Any]]:
@@ -70,6 +73,7 @@ def load_pack(argument: str) -> tuple[Path, dict[str, Any]]:
             f"манифест пакета не найден: {path}",
             f"找不到包清单：{path}",
             f"パックマニフェストが見つかりません: {path}",
+            f"패키지 매니페스트를 찾을 수 없습니다: {path}",
         ))
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -80,6 +84,7 @@ def load_pack(argument: str) -> tuple[Path, dict[str, Any]]:
             f"некорректный JSON в {path}: {exc}",
             f"{path} 中的 JSON 无效：{exc}",
             f"{path} の JSON が無効です: {exc}",
+            f"{path}의 JSON이 올바르지 않습니다: {exc}",
         )) from exc
     return path.parent, data
 
@@ -121,6 +126,7 @@ def validate_pack(pack_dir: Path, data: dict[str, Any]) -> list[str]:
     RU: Возвращает ошибки валидации; пустой список означает корректность.
     ZH: 返回校验错误；空列表表示有效。
     JA: 検証エラーを返します。空リストは有効を意味します。
+    KO: 검증 오류를 반환합니다. 빈 목록은 유효함을 의미합니다.
     """
     errors: list[str] = []
 
@@ -197,6 +203,7 @@ def ensure_master(pack_dir: Path, data: dict[str, Any]) -> Path:
                 f"скрипт генератора не найден: {script}",
                 f"找不到生成器脚本：{script}",
                 f"ジェネレータースクリプトが見つかりません: {script}",
+                f"제너레이터 스크립트를 찾을 수 없습니다: {script}",
             ))
         subprocess.run(
             [sys.executable, str(script), str(master), str(source.get("seed", 0))],
@@ -212,6 +219,7 @@ def ensure_master(pack_dir: Path, data: dict[str, Any]) -> Path:
                 f"генератор выдал {actual}, ожидалось {expected}",
                 f"生成器输出 {actual}，应为 {expected}",
                 f"ジェネレーターの出力は {actual}、期待値は {expected}",
+                f"제너레이터 출력: {actual}, 예상: {expected}",
             ))
         return master
 
@@ -221,6 +229,7 @@ def ensure_master(pack_dir: Path, data: dict[str, Any]) -> Path:
         f"мастер не найден и генератор не задан: {master}",
         f"未找到母版且未定义生成器：{master}",
         f"マスターがなく、ジェネレーターも定義されていません: {master}",
+        f"마스터가 없고 제너레이터도 정의되지 않았습니다: {master}",
     ))
 
 
@@ -231,6 +240,7 @@ def crop_box(master_w: int, master_h: int, aspect: tuple[int, int],
     RU: Максимальный кроп заданного aspect с сохранением safe_area.
     ZH: 保持 safe area 可见的指定宽高比最大裁切。
     JA: safe area を保持する指定アスペクトの最大切り抜き。
+    KO: safe area를 유지하면서 요청한 비율의 최대 크롭 영역입니다.
     """
     aw, ah = aspect
     ratio = aw / ah
@@ -257,6 +267,7 @@ def crop_box(master_w: int, master_h: int, aspect: tuple[int, int],
             f"предупреждение: safe_area не полностью помещается по {axis}; центрируем",
             f"警告：safe area 无法在 {axis} 上完整保留；已居中处理",
             f"警告: safe area を {axis} 方向に完全に保持できません。中央に配置します",
+            f"경고: {axis} 방향에서 safe area를 완전히 유지할 수 없습니다. 중앙에 배치합니다",
         ), file=sys.stderr)
         return int(round(value))
 
@@ -280,12 +291,13 @@ def fs_profile(profile: str) -> str:
     RU: Двоеточие недопустимо в именах каталогов Windows.
     ZH: Windows 目录名中不允许使用冒号。
     JA: Windows のディレクトリ名にはコロンを使用できません。
+    KO: Windows 디렉터리 이름에는 콜론을 사용할 수 없습니다.
     """
     return profile.replace(":", "-") if os.name == "nt" else profile
 
 
 # ---------------------------------------------------------------------------
-# EN: commands / DE: Befehle / RU: команды / ZH: 命令 / JA: コマンド
+# EN: commands / DE: Befehle / RU: команды / ZH: 命令 / JA: コマンド / KO: 명령
 
 
 def render_pack(pack_dir: Path, out: Path, only: list[str] | None = None) -> list[dict[str, Any]]:
@@ -306,6 +318,7 @@ def render_pack(pack_dir: Path, out: Path, only: list[str] | None = None) -> lis
             "v0.1 поддерживает только output.format=jpeg",
             "v0.1 仅支持 output.format=jpeg",
             "v0.1 では output.format=jpeg のみ対応します",
+            "v0.1은 output.format=jpeg만 지원합니다",
         ))
 
     records: list[dict[str, Any]] = []
@@ -356,6 +369,7 @@ def render_pack(pack_dir: Path, out: Path, only: list[str] | None = None) -> lis
                     f"отрендерено {relative}",
                     f"已渲染 {relative}",
                     f"レンダー完了: {relative}",
+                    f"렌더링 완료: {relative}",
                 ))
 
     write_index(out_root, data, records)
@@ -406,6 +420,7 @@ def pick_file(records: list[dict[str, Any]], profile: str = "16:9") -> dict[str,
             "нет отрендеренных файлов; сначала выполните render",
             "尚未渲染；请先运行 render",
             "レンダー結果がありません。先に render を実行してください",
+            "렌더링된 파일이 없습니다. 먼저 render를 실행하세요",
         ))
     return max(candidates, key=lambda r: r["width"])
 
@@ -420,6 +435,7 @@ def adapter_config(target: str, chosen: dict[str, Any], data: dict[str, Any]) ->
             "# RU: Сгенерировано wps 0.1 — замените eDP-1 на имя своего монитора.\n"
             "# ZH: 由 wps 0.1 生成——请将 eDP-1 替换为您的显示器名称。\n"
             "# JA: wps 0.1 が生成しました — eDP-1 を実際のモニター名に置き換えてください。\n"
+            "# KO: wps 0.1에서 생성했습니다 — eDP-1을 모니터 이름으로 바꾸세요.\n"
             f"preload = {path}\n"
             f"wallpaper = eDP-1,{path}\n"
         ))
@@ -431,6 +447,7 @@ def adapter_config(target: str, chosen: dict[str, Any], data: dict[str, Any]) ->
             "<!-- RU: Сгенерировано wps 0.1. -->\n"
             "<!-- ZH: 由 wps 0.1 生成。 -->\n"
             "<!-- JA: wps 0.1 が生成しました。 -->\n"
+            "<!-- KO: wps 0.1에서 생성했습니다. -->\n"
             "<wallpapers>\n"
             "  <wallpaper deleted=\"false\">\n"
             f"    <name>{name} (WPS)</name>\n"
@@ -447,6 +464,7 @@ def adapter_config(target: str, chosen: dict[str, Any], data: dict[str, Any]) ->
             "; RU: Сгенерировано wps 0.1 — шаблон, проверьте перед импортом.\n"
             "; ZH: 由 wps 0.1 生成——导入前请检查模板。\n"
             "; JA: wps 0.1 が生成しました — インポート前に内容を確認してください。\n"
+            "; KO: wps 0.1에서 생성했습니다 — 가져오기 전에 검토하세요.\n"
             "[Theme]\n"
             f"DisplayName={name} (WPS)\n"
             "[Control Panel\\Desktop]\n"
@@ -462,6 +480,7 @@ def adapter_config(target: str, chosen: dict[str, Any], data: dict[str, Any]) ->
             "# RU: Сгенерировано wps 0.1 — выполняется для каждого дисплея/пространства.\n"
             "# ZH: 由 wps 0.1 生成——按显示器/桌面空间运行。\n"
             "# JA: wps 0.1 が生成しました — ディスプレイ／スペースごとに実行されます。\n"
+            "# KO: wps 0.1에서 생성했습니다 — 디스플레이/스페이스별로 실행됩니다.\n"
             f"WALLPAPER=\"{path}\"\n"
             "osascript -e 'tell application \"System Events\" to tell every desktop'\n"
             "  -e \"set picture to (POSIX file \\\"$WALLPAPER\\\") as alias\" \\\n"
@@ -475,6 +494,7 @@ def adapter_config(target: str, chosen: dict[str, Any], data: dict[str, Any]) ->
             "# RU: Сгенерировано wps 0.1 — FreeBSD использует пути /usr/local.\n"
             "# ZH: 由 wps 0.1 生成——FreeBSD 使用 /usr/local 路径。\n"
             "# JA: wps 0.1 が生成しました — FreeBSD では /usr/local パスを使用します。\n"
+            "# KO: wps 0.1에서 생성했습니다 — FreeBSD는 /usr/local 경로를 사용합니다.\n"
             f"WALLPAPER=\"{path}\"\n"
             "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -s \"$WALLPAPER\"\n"
         ))
@@ -492,8 +512,11 @@ def adapter_config(target: str, chosen: dict[str, Any], data: dict[str, Any]) ->
             f"    （{path}），然后在桌面设置中将其设为背景。\n"
             "JA: ネイティブアダプターはまだ検証されていません。生成された JPG\n"
             f"    ({path}) を Tracker で開き、デスクトップ設定で背景に設定してください。\n"
-            "EN/DE/RU/ZH/JA: Report your Haiku version / Melden Sie Ihre Haiku-Version /\n"
-            "Сообщите версию Haiku / 请反馈您的 Haiku 版本 / Haiku のバージョンを報告してください。\n"
+            "KO: 네이티브 어댑터가 아직 검증되지 않았습니다. 생성된 JPG\n"
+            f"    ({path})를 Tracker에서 열고 데스크톱 설정에서 배경으로 지정하세요.\n"
+            "EN/DE/RU/ZH/JA/KO: Report your Haiku version / Melden Sie Ihre Haiku-Version /\n"
+            "Сообщите версию Haiku / 请反馈您的 Haiku 版本 / Haiku のバージョンを報告してください /\n"
+            "Haiku 버전을 알려주세요.\n"
         ))
     return ("README.txt", L(
         f"Generated by wps 0.1. Set {path} as wallpaper.",
@@ -501,6 +524,7 @@ def adapter_config(target: str, chosen: dict[str, Any], data: dict[str, Any]) ->
         f"Сгенерировано wps 0.1. Установите {path} как обои.",
         f"由 wps 0.1 生成。请将 {path} 设为壁纸。",
         f"wps 0.1 が生成しました。{path} を壁紙に設定してください。",
+        f"wps 0.1에서 생성했습니다. {path}를 배경화면으로 설정하세요.",
     ) + "\n")
 
 
@@ -513,6 +537,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
             "паки не найдены",
             "未找到任何包",
             "パックが見つかりません",
+            "팩을 찾을 수 없습니다",
         ), file=sys.stderr)
         return 1
     failed = 0
@@ -528,6 +553,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
                 "детали ниже на каноническом английском (сообщения схемы/валидатора)",
                 "以下详情为权威英文（schema/校验器消息）",
                 "以下の詳細は正規英語です（スキーマ／バリデーターのメッセージ）",
+                "아래 내용은 표준 영문입니다(schema/validator 메시지)",
             ))
             for error in errors:
                 print(f"  - {error}")
@@ -546,6 +572,7 @@ def cmd_render(args: argparse.Namespace) -> int:
             "пак некорректен:",
             "包无效：",
             "パックが無効です：",
+            "팩이 유효하지 않습니다:",
         ), file=sys.stderr)
         for error in errors:
             print(f"  - {error}", file=sys.stderr)
@@ -576,6 +603,7 @@ def cmd_pack(args: argparse.Namespace) -> int:
         f"архив {archive}",
         f"归档 {archive}",
         f"アーカイブ {archive}",
+        f"아카이브 {archive}",
     ))
     return 0
 
@@ -592,6 +620,7 @@ def cmd_install(args: argparse.Namespace) -> int:
             f"предупреждение: неизвестный таргет {target}",
             f"警告：未知目标 {target}",
             f"警告: 不明なターゲット {target}",
+            f"경고: 알 수 없는 대상 {target}",
         ), file=sys.stderr)
     filename, text = adapter_config(target, pick_file(records), data)
     destination = out_root / "install" / target.replace(":", "-")
@@ -603,6 +632,7 @@ def cmd_install(args: argparse.Namespace) -> int:
         f"конфиг {destination / filename}",
         f"配置文件 {destination / filename}",
         f"設定ファイル {destination / filename}",
+        f"설정 파일 {destination / filename}",
     ))
     print(L(
         "No system files were modified. Use --apply in a future version to install.",
@@ -610,6 +640,7 @@ def cmd_install(args: argparse.Namespace) -> int:
         "Системные файлы не изменены. --apply появится в одной из следующих версий.",
         "未修改任何系统文件。未来版本将提供 --apply 参数。",
         "システムファイルは変更されていません。--apply は将来のバージョンで使用可能になります。",
+        "시스템 파일은 변경되지 않았습니다. 향후 버전에서 --apply를 사용할 수 있습니다.",
     ))
     return 0
 
@@ -622,6 +653,7 @@ def cmd_capabilities(_: argparse.Namespace) -> int:
         "Обозначения: target | tier | jpeg | per-monitor | theme-sync | notes",
         "图例：target | tier | jpeg | per-monitor | theme-sync | notes",
         "凡例: target | tier | jpeg | per-monitor | theme-sync | notes",
+        "범례: target | tier | jpeg | per-monitor | theme-sync | notes",
     ))
     print(f"{'target':<20} {'tier':<5} {'jpeg':<5} {'per-monitor':<12} {'theme-sync':<11} notes")
     for name, info in targets.items():
@@ -639,11 +671,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="wps",
         description=L(
-            "Wallset CLI v0.1 — five-language help (EN/DE/RU/ZH/JA)",
-            "Wallset CLI v0.1 — Hilfe in fünf Sprachen (EN/DE/RU/ZH/JA)",
-            "Wallset CLI v0.1 — справка на пяти языках (EN/DE/RU/ZH/JA)",
-            "Wallset CLI v0.1 — 五语言帮助（EN/DE/RU/ZH/JA）",
-            "Wallset CLI v0.1 — 5言語ヘルプ（EN/DE/RU/ZH/JA）",
+            "Wallset CLI v0.1 — six-language help (EN/DE/RU/ZH/JA/KO)",
+            "Wallset CLI v0.1 — Hilfe in sechs Sprachen (EN/DE/RU/ZH/JA/KO)",
+            "Wallset CLI v0.1 — справка на шести языках (EN/DE/RU/ZH/JA/KO)",
+            "Wallset CLI v0.1 — 六语言帮助（EN/DE/RU/ZH/JA/KO）",
+            "Wallset CLI v0.1 — 6言語ヘルプ（EN/DE/RU/ZH/JA/KO）",
+            "Wallset CLI v0.1 — 6개 언어 도움말 (EN/DE/RU/ZH/JA/KO)",
         ),
     )
     sub = parser.add_subparsers(dest="command", required=True)
@@ -651,31 +684,33 @@ def build_parser() -> argparse.ArgumentParser:
     validate = sub.add_parser("validate", help=L(
         "validate pack manifests", "Paketmanifeste validieren",
         "проверить манифесты паков", "校验包清单", "パックマニフェストを検証",
+        "팩 매니페스트 검증",
     ))
     validate.add_argument("pack", nargs="*", help=L(
         "pack directory (default: all packs)", "Paketverzeichnis (Standard: alle Pakete)",
         "каталог пака (по умолчанию: все паки)", "包目录（默认：全部包）",
-        "パックのディレクトリ（既定：すべてのパック）",
+        "パックのディレクトリ（既定：すべてのパック）", "팩 디렉터리 (기본값: 모든 팩)",
     ))
     validate.set_defaults(func=cmd_validate)
 
     render = sub.add_parser("render", help=L(
         "render JPEG renditions", "JPEG-Ausgaben rendern",
         "отрендерить JPEG-файлы", "渲染 JPEG 输出", "JPEG をレンダリング",
+        "JPEG 결과물 렌더링",
     ))
     render.add_argument("pack")
     render.add_argument("--out", default="dist")
     render.add_argument("--profile", action="append", dest="profile", help=L(
         "limit to a profile (repeatable)", "auf ein Profil begrenzen (wiederholbar)",
         "ограничить профилем (повторяемо)", "限定为某个配置（可重复）",
-        "プロファイルを指定（繰り返し可能）",
+        "プロファイルを指定（繰り返し可能）", "프로필로 제한 (반복 가능)",
     ))
     render.set_defaults(func=cmd_render)
 
     bundle = sub.add_parser("pack", help=L(
         "render and build a zip archive", "rendern und ZIP-Archiv erstellen",
         "отрендерить и собрать zip-архив", "渲染并生成 zip 归档",
-        "レンダーして zip アーカイブを作成",
+        "レンダーして zip アーカイブを作成", "렌더링 후 zip 아카이브 생성",
     ))
     bundle.add_argument("pack")
     bundle.add_argument("--out", default="dist")
@@ -687,6 +722,7 @@ def build_parser() -> argparse.ArgumentParser:
         "создать конфиг системы (без записи в систему)",
         "生成原生配置（不写入系统）",
         "ネイティブ設定を生成（システムには書き込みません）",
+        "네이티브 설정 생성 (시스템에 쓰지 않음)",
     ))
     install.add_argument("pack")
     install.add_argument("--target", required=True)
@@ -696,7 +732,7 @@ def build_parser() -> argparse.ArgumentParser:
     caps = sub.add_parser("capabilities", help=L(
         "print target capability matrix", "Ziel-Fähigkeitsmatrix ausgeben",
         "вывести матрицу возможностей таргетов", "打印目标能力矩阵",
-        "ターゲット能力一覧を表示",
+        "ターゲット能力一覧を表示", "대상 기능 매트릭스 출력",
     ))
     caps.set_defaults(func=cmd_capabilities)
 

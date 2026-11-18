@@ -14,6 +14,9 @@
 > JA: 1つのマスター素材（SVG/PNG、またはスクリプトとシード）と JSON マニフェストで
 > 静的壁紙を記述し、JPG ファイルと OS 固有の設定を自動生成します。v0.1 では動的
 > 壁紙はサポートしません。
+>
+> KO: 마스터 파일(SVG/PNG 또는 스크립트와 시드)과 JSON 매니페스트 하나로 정적 배경화면을
+> 설명하며, JPG 파일과 OS별 설정을 자동 생성합니다. v0.1에서는 동적 배경화면을 지원하지 않습니다.
 
 **Status:** draft. No compatibility promise on `v0.x`; a breaking change means
 a new schema file (`v0.2.json`, …).
@@ -224,9 +227,9 @@ A conforming validator MUST reject a pack when:
 
 All comments and descriptions — documentation, schema descriptions, CLI help,
 CLI output, config-template comments and code comments — MUST be provided in
-five languages: English, German, Russian, Chinese and Japanese. English is the
-canonical text; every translation MUST be updated in the same commit. Code
-identifiers, file names and JSON keys remain English. Licence texts and
+six languages: English, German, Russian, Chinese, Japanese and Korean. English
+is the canonical text; every translation MUST be updated in the same commit.
+Code identifiers, file names and JSON keys remain English. Licence texts and
 third-party legal code remain in their original language. Machine translation
 is allowed as a draft but MUST be reviewed by a human.
 
@@ -234,28 +237,28 @@ is allowed as a draft but MUST be reviewed by a human.
 
 Alle Kommentare und Beschreibungen — Dokumentation, Schema-Beschreibungen,
 CLI-Hilfe, CLI-Ausgaben, Kommentare in Konfigurationsvorlagen und Code-Kommentare
-— MÜSSEN in fünf Sprachen vorliegen: Englisch, Deutsch, Russisch, Chinesisch und
-Japanisch. Englisch ist der verbindliche Text; jede Übersetzung MUSS im selben
-Commit aktualisiert werden. Code-Bezeichner, Dateinamen und JSON-Schlüssel
-bleiben englisch. Lizenztexte und juristische Texte Dritter bleiben in ihrer
-Originalsprache. Maschinelle Übersetzung ist als Entwurf erlaubt, MUSS aber von
-einem Menschen geprüft werden.
+— MÜSSEN in sechs Sprachen vorliegen: Englisch, Deutsch, Russisch, Chinesisch,
+Japanisch und Koreanisch. Englisch ist der verbindliche Text; jede Übersetzung
+MUSS im selben Commit aktualisiert werden. Code-Bezeichner, Dateinamen und
+JSON-Schlüssel bleiben englisch. Lizenztexte und juristische Texte Dritter
+bleiben in ihrer Originalsprache. Maschinelle Übersetzung ist als Entwurf
+erlaubt, MUSS aber von einem Menschen geprüft werden.
 
 ### 14.3 RU
 
 Все комментарии и описания — документация, описания в схеме, справка CLI,
 вывод CLI, комментарии в шаблонах конфигов и комментарии в коде — ДОЛЖНЫ быть
-представлены на пяти языках: английском, немецком, русском, китайском и
-японском. Английский текст является каноническим; каждый перевод ДОЛЖЕН
-обновляться в том же коммите. Идентификаторы кода, имена файлов и ключи JSON
-остаются на английском. Тексты лицензий и сторонние юридические тексты
+представлены на шести языках: английском, немецком, русском, китайском,
+японском и корейском. Английский текст является каноническим; каждый перевод
+ДОЛЖЕН обновляться в том же коммите. Идентификаторы кода, имена файлов и ключи
+JSON остаются на английском. Тексты лицензий и сторонние юридические тексты
 остаются на языке оригинала. Машинный перевод допустим как черновик, но ДОЛЖЕН
 быть проверен человеком.
 
 ### 14.4 ZH
 
 所有注释和说明——文档、JSON Schema 中的 description、CLI 帮助与输出、配置模板注释
-以及代码注释——必须以五种语言提供：英语、德语、俄语、中文和日语。英文为权威原文，
+以及代码注释——必须以六种语言提供：英语、德语、俄语、中文、日语和韩语。英文为权威原文，
 每一份译文必须在同一提交中更新。代码标识符、文件名和 JSON 键保持英文。许可证文本
 和第三方法律文本保持原文语言。机器翻译仅可作为草稿，且必须经过人工校对。
 
@@ -263,7 +266,15 @@ einem Menschen geprüft werden.
 
 すべてのコメントと説明（ドキュメント、スキーマの description、CLI のヘルプと出力、
 設定テンプレートのコメント、コード内コメント）は、英語・ドイツ語・ロシア語・
-中国語・日本語の5言語で提供しなければなりません。英語を正規の原文とし、すべての
-翻訳は同じコミットで更新する必要があります。コードの識別子、ファイル名、JSON キー
-は英語のままとします。ライセンス本文および第三者が作成した法的文書は原文の言語の
-ままとします。機械翻訳は下書きとしてのみ許可され、人間の確認が必要です。
+中国語・日本語・韓国語の6言語で提供しなければなりません。英語を正規の原文とし、
+すべての翻訳は同じコミットで更新する必要があります。コードの識別子、ファイル名、
+JSON キーは英語のままとします。ライセンス本文および第三者が作成した法的文書は
+原文の言語のままとします。機械翻訳は下書きとしてのみ許可され、人間の確認が必要です。
+
+### 14.6 KO
+
+모든 주석과 설명(문서, 스키마 description, CLI 도움말과 출력, 설정 템플릿 주석,
+코드 주석)은 영어·독일어·러시아어·중국어·일본어·한국어 6개 언어로 제공해야 합니다.
+영어를 정식 원문으로 하며, 모든 번역은 같은 커밋에서 업데이트해야 합니다. 코드 식별자,
+파일 이름, JSON 키는 영어로 유지합니다. 라이선스 문구와 제3자의 법적 문서는 원래
+언어로 유지합니다. 기계 번역은 초안으로만 허용되며 사람의 확인이 필요합니다.

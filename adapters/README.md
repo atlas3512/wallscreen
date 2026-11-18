@@ -1,4 +1,4 @@
-# Adapters / Adapter / Адаптеры / 适配器 / アダプター
+# Adapters / Adapter / Адаптеры / 适配器 / アダプター / 어댑터
 
 ## EN
 
@@ -19,3 +19,7 @@ Ein Adapter beantwortet eine Frage: Was braucht dieses System bei gegebenen JPG-
 ## JA
 
 アダプターが答えるのは一つの質問だけです。JPG のパスが与えられたとき、この OS に何が必要か。切り抜きやパレットはマニフェストから来るため、アダプターは決定しません。入力：マニフェスト + `index.json`。出力：選択した JPG とネイティブ設定ファイルを含むディレクトリ。`--out` 以外への書き込みは禁止です。`--apply` は予約済みで v0.1 では未実装です。ターゲット構文：`<os>[:<de>][@version]`（例：`linux:hyprland`、`windows`、`macos@14`、`freebsd:xfce`、`haiku`）。Tier 1 = 実装・レビュー済み、Tier 2 = パス変更による再利用、Tier 3 = 未検証のフォールバック。能力定義は [`capabilities.json`](capabilities.json) にあります。
+
+## KO
+
+어댑터는 한 가지 질문에만 답합니다. 렌더링된 JPG 경로가 주어졌을 때 이 시스템에 무엇이 필요한가. 크롭과 팔레트는 매니페스트에서 오므로 어댑터가 결정하지 않습니다. 입력: 매니페스트 + `index.json`. 출력: 선택한 JPG와 네이티브 설정 파일이 있는 디렉터리. `--out` 밖에는 쓰지 않으며, `--apply`는 예약된 옵션으로 v0.1에서는 구현되지 않았습니다. 대상 구문: `<os>[:<de>][@version]` (예: `linux:hyprland`, `windows`, `macos@14`, `freebsd:xfce`, `haiku`). Tier 1 = 구현 및 검토 완료, Tier 2 = 경로 변경을 통한 재사용, Tier 3 = 검증되지 않은 폴백. 기능 정의는 [`capabilities.json`](capabilities.json)에 있습니다.
