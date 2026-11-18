@@ -140,6 +140,194 @@ For each profile and each requested width:
 
 The master MUST never be re-encoded before cropping.
 
+### 7.1 EN
+
+A raster master MUST be lossless: 8-bit PNG in sRGB, or SVG for vector art; a
+procedural script with a fixed seed is an equivalent alternative. JPEG MUST NOT
+be used as a master — its compression and 4:2:0 chroma subsampling would be
+baked into every rendition. 16-bit PNG offers little benefit because the final
+output is 8-bit JPEG.
+
+The renderer crops; it never stretches. Size the master so that the crop for
+each profile is at least as wide as the largest requested output width for that
+profile, with a 1.5–2× downsampling margin for Lanczos.
+
+For a 16:9 master with aspect `a = W/H = 1.778` and a profile aspect `r = w/h`:
+
+- if `r >= a` (master narrower than the target, e.g. `21:9`, `32:9`), the crop
+  width equals `W`, so `W >= W_out` is required;
+- if `r < a` (master wider than the target, e.g. `4:3`, `9:16`), the crop width
+  equals `H·r`, so `H >= W_out / r` is required.
+
+For the widest profile `32:9` (`r = 3.556`) this means `W >= W_out`; for the
+tallest `9:16` (`r = 0.563`) it means `H >= 1.778 · W_out`. The `9:16` profile
+is therefore the height-limiting case.
+
+Recommended masters for a 16:9 source:
+
+- largest output 3840 px → `7680x4320` (2× headroom; the reference pack);
+- largest output 5120 px at `21:9`/`32:9` → at least 10240 px wide, e.g.
+  `10240x5760`;
+- absolute minimum for the widths listed in section 6 → `5120x2880`.
+
+A single global `safe_area` may not fit every aspect. Use per-profile
+`renditions.<profile>.safe_area` overrides for ultrawide and portrait profiles,
+as the reference pack does.
+
+### 7.2 DE
+
+Ein Raster-Master muss verlustfrei sein: 8-Bit-PNG in sRGB oder SVG für
+Vektorgrafiken; ein prozedurales Skript mit festem Seed ist eine gleichwertige
+Alternative. JPEG darf nicht als Master verwendet werden — seine Kompression
+und 4:2:0-Chroma-Subsampling würden in jede Ausgabe übernommen. 16-Bit-PNG
+bringt wenig, da das Endergebnis ein 8-Bit-JPEG ist.
+
+Der Renderer schneidet zu, er streckt nicht. Dimensionieren Sie den Master so,
+dass der Zuschnitt für jedes Profil mindestens so breit wie die größte
+angeforderte Ausgabe-breite dieses Profils ist, mit 1,5–2× Reserve beim
+Downsampling für Lanczos.
+
+Für einen 16:9-Master mit `a = W/H = 1,778` und einem Profil mit `r = w/h`:
+
+- wenn `r >= a` (Master schmaler als das Ziel, z. B. `21:9`, `32:9`), entspricht
+  die Schnittbreite `W`, also ist `W >= W_out` erforderlich;
+- wenn `r < a` (Master breiter als das Ziel, z. B. `4:3`, `9:16`), entspricht
+  die Schnittbreite `H·r`, also ist `H >= W_out / r` erforderlich.
+
+Für das breiteste Profil `32:9` (`r = 3,556`) bedeutet dies `W >= W_out`, für das
+höchste `9:16` (`r = 0,563`) `H >= 1,778 · W_out`. `9:16` ist damit der
+limitierende Fall für die Höhe.
+
+Empfohlene Master für eine 16:9-Quelle:
+
+- größte Ausgabe 3840 px → `7680x4320` (2× Reserve; Referenzpaket);
+- größte Ausgabe 5120 px bei `21:9`/`32:9` → mindestens 10240 px breit, z. B.
+  `10240x5760`;
+- absolutes Minimum für die Breiten aus Abschnitt 6 → `5120x2880`.
+
+Ein globales `safe_area` passt möglicherweise nicht zu jedem Seitenverhältnis.
+Verwenden Sie für Ultrawide- und Portrait-Profile pro-Profil-Überschreibungen
+`renditions.<profile>.safe_area`, wie im Referenzpaket.
+
+### 7.3 RU
+
+Растровый мастер обязан быть lossless: 8-битный PNG в sRGB или SVG для
+векторной графики; процедурный скрипт с фиксированным seed — равнозначная
+альтернатива. JPEG нельзя использовать как мастер — его компрессия и
+4:2:0-субдискретизация хромы закрепятся в каждом рендере. 16-битный PNG даёт
+мало выигрыша, ведь финал — 8-битный JPEG.
+
+Рендерер вырезает область, но не растягивает. Подбирайте размер мастера так,
+чтобы кроп для каждого профиля был не уже максимальной запрошенной ширины этого
+профиля, с запасом 1,5–2× для Lanczos.
+
+Для мастера 16:9 с `a = W/H = 1,778` и профиля с `r = w/h`:
+
+- если `r >= a` (мастер уже цели, например `21:9`, `32:9`), ширина кропа равна
+  `W`, значит требуется `W >= W_out`;
+- если `r < a` (мастер шире цели, например `4:3`, `9:16`), ширина кропа равна
+  `H·r`, значит требуется `H >= W_out / r`.
+
+Для самого широкого профиля `32:9` (`r = 3,556`) это `W >= W_out`, для самого
+высокого `9:16` (`r = 0,563`) — `H >= 1,778 · W_out`. Таким образом, `9:16`
+ограничивает высоту.
+
+Рекомендуемые мастера для источника 16:9:
+
+- максимальная ширина 3840 px → `7680x4320` (запас 2×; референсный пак);
+- максимальная ширина 5120 px у `21:9`/`32:9` → не менее 10240 px по ширине,
+  например `10240x5760`;
+- абсолютный минимум для ширин из раздела 6 → `5120x2880`.
+
+Одно глобальное `safe_area` может не подойти каждому аспекту. Используйте
+переопределения `renditions.<profile>.safe_area` для ультрашироких и
+портретных профилей, как в референсном паке.
+
+### 7.4 ZH
+
+栅格母版必须是无损的：sRGB 8-bit PNG，矢量图用 SVG；带固定种子的程序化脚本是等效替代。
+不得用 JPEG 作母版——其压缩和 4:2:0 色度子采样会被固化进每个输出。16-bit PNG 收益很小，
+因为最终是 8-bit JPEG。
+
+渲染器只裁切，不拉伸。母版尺寸必须保证每个配置裁切后的宽度不小于该配置请求的最大输出
+宽度，并为 Lanczos 留出 1.5–2× 余量。
+
+对于 16:9 母版（`a = W/H = 1.778`）与配置比例 `r = w/h`：
+
+- 若 `r >= a`（母版比目标窄，如 `21:9`、`32:9`），裁切宽度等于 `W`，故需 `W >= W_out`；
+- 若 `r < a`（母版比目标宽，如 `4:3`、`9:16`），裁切宽度等于 `H·r`，故需 `H >= W_out / r`。
+
+最宽的 `32:9`（`r = 3.556`）要求 `W >= W_out`，最高的 `9:16`（`r = 0.563`）要求
+`H >= 1.778 · W_out`。因此 `9:16` 是高度的限制因素。
+
+16:9 来源的推荐母版：
+
+- 最大输出 3840 px → `7680x4320`（2× 余量；参考包）；
+- `21:9`/`32:9` 最大输出 5120 px → 宽度至少 10240 px，如 `10240x5760`；
+- 第 6 节所列宽度的绝对最低 → `5120x2880`。
+
+一个全局 `safe_area` 未必适合所有比例。像参考包那样，为超宽和竖屏配置使用
+`renditions.<profile>.safe_area` 覆盖。
+
+### 7.5 JA
+
+ラスターマスターは非圧縮である必要があります。sRGB の 8bit PNG、ベクターなら SVG。
+固定シード付きの手続き型スクリプトも同等の代替手段です。JPEG をマスターにしてはいけません。
+圧縮と 4:2:0 色差サブサンプリングがすべての出力に焼き付きます。最終出力が 8bit JPEG のため、
+16bit PNG の恩恵はほとんどありません。
+
+レンダラーは切り抜きを行うだけで、引き伸ばしは行いません。各プロファイルの切り抜き幅が
+そのプロファイルの最大出力幅以上になるようにマスターをサイズ決めし、Lanczos 用に
+1.5〜2× の余裕を持たせてください。
+
+16:9 マスター（`a = W/H = 1.778`）とプロファイル比 `r = w/h` の場合：
+
+- `r >= a`（マスターが目標より狭い、例：`21:9`、`32:9`）なら切り抜き幅は `W` となり、
+  `W >= W_out` が必要；
+- `r < a`（マスターが目標より広い、例：`4:3`、`9:16`）なら切り抜き幅は `H·r` となり、
+  `H >= W_out / r` が必要。
+
+最も広い `32:9`（`r = 3.556`）では `W >= W_out`、最も高い `9:16`（`r = 0.563`）では
+`H >= 1.778 · W_out` となります。つまり `9:16` が高さの制約になります。
+
+16:9 ソースの推奨マスター：
+
+- 最大出力 3840 px → `7680x4320`（2× の余裕。リファレンスパック）；
+- `21:9`/`32:9` で最大出力 5120 px → 幅 10240 px 以上、例：`10240x5760`；
+- 第 6 節の幅に対する絶対最小 → `5120x2880`。
+
+単一のグローバル `safe area` がすべてのアスペクトに合うとは限りません。リファレンスパックの
+ように、超広角と縦長プロファイルには `renditions.<profile>.safe_area` の上書きを使用してください。
+
+### 7.6 KO
+
+래스터 마스터는 반드시 무손실이어야 합니다. sRGB 8비트 PNG, 벡터는 SVG를 사용하고,
+고정 시드가 있는 절차적 스크립트도 동등한 대안입니다. JPEG는 마스터로 쓸 수 없습니다.
+압축과 4:2:0 색도 서브샘플링이 모든 결과물에 그대로 남습니다. 최종 출력이 8비트 JPEG이므로
+16비트 PNG의 이점은 거의 없습니다.
+
+렌더러는 자를 뿐 늘리지 않습니다. 각 프로필의 크롭 폭이 해당 프로필의 최대 출력 폭 이상이
+되도록 마스터 크기를 정하고, Lanczos용으로 1.5~2× 여유를 두세요.
+
+16:9 마스터(`a = W/H = 1.778`)와 프로필 비율 `r = w/h`의 경우:
+
+- `r >= a`(마스터가 목표보다 좁음, 예: `21:9`, `32:9`)면 크롭 폭은 `W`이므로
+  `W >= W_out`이 필요합니다.
+- `r < a`(마스터가 목표보다 넓음, 예: `4:3`, `9:16`)면 크롭 폭은 `H·r`이므로
+  `H >= W_out / r`이 필요합니다.
+
+가장 넓은 `32:9`(`r = 3.556`)는 `W >= W_out`, 가장 높은 `9:16`(`r = 0.563`)은
+`H >= 1.778 · W_out`을 요구합니다. 따라서 `9:16`이 높이의 제약 조건입니다.
+
+16:9 소스의 권장 마스터:
+
+- 최대 출력 3840 px → `7680x4320`(2× 여유, 참조 팩);
+- `21:9`/`32:9`에서 최대 출력 5120 px → 너비 10240 px 이상, 예: `10240x5760`;
+- 6절에 나열된 폭의 절대 최소 → `5120x2880`.
+
+단일 전역 `safe area`가 모든 비율에 맞지 않을 수 있습니다. 참조 팩처럼 울트라와이드 및
+세로 프로필에는 `renditions.<profile>.safe_area` 재정의를 사용하세요.
+
 ## 8. JPEG output profile (normative)
 
 - Encoder settings are declared in the manifest and pinned by a lockfile in the

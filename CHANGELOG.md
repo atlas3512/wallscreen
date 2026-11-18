@@ -40,6 +40,22 @@ KO: 모든 주요 변경 사항을 여기에 기록합니다. 형식은 Keep a C
     （EN/DE/RU/ZH/JA/KO）で提供します。
   - KO: 문서, 스키마 설명, CLI 도움말/출력, 설정 템플릿을 6개 언어
     (EN/DE/RU/ZH/JA/KO)로 제공합니다.
+- Master format and resolution guidance (`SPEC.md` §7.1): lossless 8-bit sRGB
+  PNG / SVG / procedural script, crop-only rendering, and sizing rules for all
+  eight aspect profiles (typically `7680x4320` for a 3840 px pack).
+  - DE: Vorgaben zu Masterformat und -auflösung (`SPEC.md` §7.1): verlustfreies
+    8-Bit-sRGB-PNG / SVG / Skript, reines Zuschneiden und Größenregeln für alle
+    acht Seitenverhältnisse (üblicherweise `7680x4320` für 3840 px).
+  - RU: Правила формата и размера мастера (`SPEC.md` §7.1): lossless 8-битный
+    PNG в sRGB / SVG / скрипт, только кроп и правила размера для всех восьми
+    профилей (обычно `7680x4320` для 3840 px).
+  - ZH: 母版格式与分辨率指南（`SPEC.md` §7.1）：无损 8-bit sRGB PNG／SVG／程序化脚本、
+    仅裁切渲染，以及全部八种配置的尺寸规则（3840 px 包通常为 `7680x4320`）。
+  - JA: マスターの形式と解像度の指針（`SPEC.md` §7.1）：非圧縮 8bit sRGB PNG／SVG／
+    スクリプト、切り抜きのみ、8つのアスペクトすべてのサイズ規則（3840 px なら
+    通常 `7680x4320`）。
+  - KO: 마스터 형식·해상도 지침(`SPEC.md` §7.1): 무손실 8비트 sRGB PNG／SVG／스크립트,
+    크롭 전용 렌더링, 8개 프로필 모두의 크기 규칙(3840 px 팩은 보통 `7680x4320`).
 
 ### Explicitly out of scope
 
